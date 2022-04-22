@@ -1,0 +1,49 @@
+<ngx-ui-loader
+  [fgsColor]="primaryColor"
+  [pbColor]="primaryColor"
+  [fgsType]="SPINNER.pulse"
+>
+</ngx-ui-loader>
+
+<mat-toolbar navbar>
+  <mat-toolbar-row>
+    <h1>
+      <img blue-o src="assets/images/blue-o.png" alt="O" /><span>bum</span>
+    </h1>
+    <span spacer></span>
+    <button mat-icon-button (click)="changeTheme()" title="Switch Theme">
+      <img
+        [src]="
+          'assets/svgs/' +
+          (themes.indexOf(cssClass) === 0 ? themes[1] : themes[0]) +
+          '.svg'
+        "
+        alt=""
+      />
+    </button>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-sidenav-container>
+  <mat-sidenav-content>
+    <main>
+      <router-outlet></router-outlet>
+    </main>
+
+    <footer>
+      <mat-toolbar>
+        <mat-toolbar-row>
+          <small>&copy; {{ year }} All Rights Reserved</small>
+          <a
+            mat-icon-button
+            href="https://obumnwabude.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            matTooltip="About Obum"
+            ><img globe-icon src="assets/svgs/explore.svg"
+          /></a>
+        </mat-toolbar-row>
+      </mat-toolbar>
+    </footer>
+  </mat-sidenav-content>
+</mat-sidenav-container>
