@@ -35,10 +35,14 @@
 
     p {
       max-width: 384px;
+      margin: 0 auto 16px auto;
+    }
+
+    [message] {
       line-height: 1.4;
       word-spacing: 1.8px;
       letter-spacing: 0.4px;
-      margin: 0 auto 32px auto;
+      margin-bottom: 32px;
     }
 
     button[sign-in] {
@@ -46,6 +50,15 @@
 
       img {
         width: 256px;
+      }
+    }
+
+    [terms] {
+      line-height: 0.7;
+      opacity: 0.6;
+
+      small {
+        font-size: 10px;
       }
     }
   }
