@@ -4,24 +4,44 @@ import * as functions from 'firebase-functions';
 
 export const callback = functions.https.onRequest(async (req, res) => {
   const db = admin.firestore();
+
+  if (!req.query.state) {
+    res.status(403).json({ message: 'Invalid state' });
+    return;
+  }
+
+  let state = req.query.state;
+
+  const stateSnap = await db.doc(`/users/${req.query.state}`).get();
+
+  if (!stateSnap.exists) {
+    res.status(403).json({ message: 'Invalid state' });
+    return;
+  }
+
+  const origin = stateSnap.data()?.origin;
+
+  if (!(req.query.code || req.query.error)) {
+    res.status(403).json({ message: 'Unauthorized' });
+    return;
+  }
+
   try {
-    if (!req.query.state) {
-      res.status(403).json({ message: 'Invalid state' });
-      return;
+    if (req.query.error) {
+      if (
+        ['user_cancelled_login', 'user_cancelled_authorize'].includes(
+          req.query.error as string
+        )
+      ) {
+        throw new functions.https.HttpsError(
+          'cancelled',
+          'Please authorize to continue'
+        );
+      } else {
+        res.status(403).json({ message: req.query.error_description });
+        return;
+      }
     }
-    if (!req.query.code) {
-      res.status(403).json({ message: 'Invalid code' });
-      return;
-    }
-
-    const stateSnap = await db.doc(`/users/${req.query.state}`).get();
-
-    if (!stateSnap.exists) {
-      res.status(403).json({ message: 'Invalid state' });
-      return;
-    }
-
-    const origin = stateSnap.data()?.origin;
 
     const linkedin = await (
       await fetch('https://www.linkedin.com/oauth/v2/accessToken', {
@@ -46,16 +66,17 @@ export const callback = functions.https.onRequest(async (req, res) => {
     const displayName = `${linkedinUser.localizedFirstName} ${linkedinUser.localizedLastName}`;
     linkedin.id = linkedinUser.id;
 
-    const email = (
-      await (
-        await fetch(
-          'https://api.linkedin.com/v2/emailAddress?q=members&projection=(elements*(handle~))',
-          {
-            headers: { Authorization: `Bearer ${linkedin.access_token}` }
-          }
-        )
-      ).json()
-    )?.elements?.[0]?.['handle~']?.emailAddress;
+    const email =
+      (
+        await (
+          await fetch(
+            'https://api.linkedin.com/v2/emailAddress?q=members&projection=(elements*(handle~))',
+            {
+              headers: { Authorization: `Bearer ${linkedin.access_token}` }
+            }
+          )
+        ).json()
+      )?.elements?.[0]?.['handle~']?.emailAddress ?? null;
 
     const imgObjs = (
       await (
@@ -80,7 +101,6 @@ export const callback = functions.https.onRequest(async (req, res) => {
       .where('id', '==', linkedin.id)
       .get();
 
-    let state;
     const profile = { email, photoURL, displayName };
     const isOldUser = matchedIdsSnap.size > 0;
     if (isOldUser) {
@@ -96,9 +116,11 @@ export const callback = functions.https.onRequest(async (req, res) => {
     await db
       .doc(`/users/${state}/auth/linkedin`)
       .set(linkedin, { merge: true });
-
-    res.redirect(`${origin}/?state=${state}`);
   } catch (error) {
-    throw new functions.https.HttpsError('internal', error.message);
+    await db
+      .doc(`/users/${req.query.state}`)
+      .set({ error: error.message }, { merge: true });
+  } finally {
+    res.redirect(`${origin}/?state=${state}`);
   }
 });
