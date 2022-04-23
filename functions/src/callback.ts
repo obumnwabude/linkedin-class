@@ -112,7 +112,7 @@ export const callback = functions.https.onRequest(async (req, res) => {
       await admin.auth().createUser({ uid: state, ...profile });
     }
 
-    await db.doc(`/users/${state}`).set(profile, { merge: isOldUser });
+    await db.doc(`/users/${state}`).set({ profile }, { merge: isOldUser });
     await db
       .doc(`/users/${state}/auth/linkedin`)
       .set(linkedin, { merge: true });

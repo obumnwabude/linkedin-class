@@ -82,7 +82,7 @@ export class SignInComponent implements OnInit {
         this.ngxLoader.start();
         await setDoc(
           doc(this.firestore, `/users/${this.auth.currentUser.uid}`),
-          { linkedin: link.value },
+          { profile: { linkedin: link.value } },
           { merge: true }
         );
         this.hasSetLink = true;
