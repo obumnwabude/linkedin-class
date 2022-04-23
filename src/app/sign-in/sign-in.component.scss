@@ -45,12 +45,20 @@
       margin-bottom: 32px;
     }
 
+    [link-form-container] {
+      margin-bottom: 8px;
+    }
+
     button[sign-in] {
       padding: 0;
 
       img {
         width: 256px;
       }
+    }
+
+    mat-form-field {
+      display: block;
     }
 
     [terms] {
@@ -60,6 +68,10 @@
       small {
         font-size: 10px;
       }
+    }
+
+    [form-hint] {
+      margin-bottom: 32px;
     }
   }
 }

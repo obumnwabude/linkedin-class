@@ -4,31 +4,95 @@
   </div>
   <div text>
     <h2>Welcome</h2>
-    <p message>
-      I hope you will get value from the <span bold>FREE </span>
-      <span italic>Grow your LinkedIn</span> Whatsapp class. Sign in to record
-      your LinkedIn Account so that others can connect with you.
-    </p>
-    <p>
-      <button
-        mat-raised-button
-        sign-in
-        (click)="signIn()"
-        color="primary"
-        matTooltip="Sign In With LinkedIn"
-      >
-        <img
-          src="assets/images/sign-in-with-linkedin.png"
-          alt="Sign In With LinkedIn"
-        />
-      </button>
-    </p>
-    <p terms>
-      <small>
-        *By signing in you agree to that your information can be recorded for
-        the class, for marketing purposes, and that other class members can view
-        your name and picture and connect with you on LinkedIn.
-      </small>
-    </p>
+
+    <ng-container *ngIf="!auth.currentUser">
+      <p message>
+        I hope you will get value from the <span bold>FREE </span>
+        <span italic>Grow your LinkedIn</span> Whatsapp class. Sign in to record
+        your LinkedIn Account so that others can connect with you.
+      </p>
+
+      <p>
+        <button
+          mat-raised-button
+          sign-in
+          (click)="signIn()"
+          color="primary"
+          matTooltip="Sign In With LinkedIn"
+        >
+          <img
+            src="assets/images/sign-in-with-linkedin.png"
+            alt="Sign In With LinkedIn"
+          />
+        </button>
+      </p>
+
+      <p terms>
+        <small>
+          *By signing in you agree to that your information can be recorded for
+          the class, for marketing purposes, and that other class members can
+          view your name and picture and connect with you on LinkedIn.
+        </small>
+      </p>
+    </ng-container>
+
+    <ng-container *ngIf="auth.currentUser && !hasSetLink">
+      <p message>
+        Hi
+        <span bold>{{ auth.currentUser.displayName?.split(' ')?.[0] }}</span
+        >, You are currently signed in with
+        <span italic bold>{{ auth.currentUser.email }}</span
+        >. To complete your sign in, please provide your LinkedIn profile link.
+      </p>
+
+      <form (ngSubmit)="submitLink(link)" #ngForm>
+        <p link-form-container>
+          <mat-form-field>
+            <mat-label>LinkedIn Profile Link</mat-label>
+            <input
+              type="text"
+              matInput
+              autofocus
+              required
+              ngModel
+              pattern="^https:\/\/linkedin.com\/in\/(\w|-)+"
+              #link="ngModel"
+              name="link"
+            />
+            <mat-error *ngIf="link.invalid">{{
+              link.hasError('required')
+                ? 'Please provide your LinkedIn link'
+                : 'Valid link starts with https://linkedin.com/in/'
+            }}</mat-error>
+            <mat-icon
+              matSuffix
+              matTooltip="Your link is in your public profile settings. Edit your custom URL as you want, then copy the full link, and come and paste it here."
+              >help</mat-icon
+            >
+          </mat-form-field>
+        </p>
+
+        <p terms form-hint text-left>
+          <small
+            >*Ensure your URL is correct, else it won't be listed with those of
+            other class members.</small
+          >
+        </p>
+
+        <p>
+          <button mat-raised-button color="primary">Submit Link</button>
+        </p>
+      </form>
+    </ng-container>
+
+    <ng-container *ngIf="auth.currentUser && hasSetLink">
+      <p message>
+        Dear
+        <span bold>{{ auth.currentUser.displayName?.split(' ')?.[0] }}</span
+        >, You are currently signed in with
+        <span italic bold>{{ auth.currentUser.email }}</span
+        >. Please wait for the class.
+      </p>
+    </ng-container>
   </div>
 </div>

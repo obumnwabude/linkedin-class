@@ -10,12 +10,20 @@ import {
 } from '@angular/fire/analytics';
 import { provideAuth, getAuth, connectAuthEmulator } from '@angular/fire/auth';
 import {
+  connectFirestoreEmulator,
+  provideFirestore,
+  getFirestore
+} from '@angular/fire/firestore';
+import {
   provideFunctions,
   getFunctions,
   connectFunctionsEmulator
 } from '@angular/fire/functions';
+import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import {
   MatSnackBarModule,
   MAT_SNACK_BAR_DEFAULT_OPTIONS
@@ -40,8 +48,11 @@ const routes: Route[] = [
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    FormsModule,
     MatButtonModule,
+    MatFormFieldModule,
     MatIconModule,
+    MatInputModule,
     MatSnackBarModule,
     MatSidenavModule,
     MatToolbarModule,
@@ -56,6 +67,13 @@ const routes: Route[] = [
         connectAuthEmulator(auth, 'http://localhost:9099');
       }
       return auth;
+    }),
+    provideFirestore(() => {
+      const firestore = getFirestore();
+      if (!environment.production) {
+        connectFirestoreEmulator(firestore, 'localhost', 8080);
+      }
+      return firestore;
     }),
     provideFunctions(() => {
       const functions = getFunctions();
