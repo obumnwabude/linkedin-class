@@ -22,6 +22,7 @@ module.exports = {
   ],
   plugins: ['@typescript-eslint', 'import'],
   rules: {
-    'import/no-unresolved': 0
+    'import/no-unresolved': 0,
+    '@typescript-eslint/no-explicit-any': ['off']
   }
 };

@@ -2,9 +2,7 @@
   "hosting": {
     "target": "linkedin-class",
     "public": "dist/linkedin-class",
-    "ignore": [
-      "**/.*"
-    ],
+    "ignore": ["**/.*"],
     "headers": [
       {
         "source": "*.[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f].+(css|js)",
@@ -27,6 +25,10 @@
     ],
     "rewrites": [
       {
+        "source": "/callback",
+        "function": "callback"
+      },
+      {
         "source": "**",
         "destination": "/index.html"
       }
@@ -47,6 +49,9 @@
     },
     "ui": {
       "enabled": true
+    },
+    "firestore": {
+      "port": 8080
     }
   }
 }

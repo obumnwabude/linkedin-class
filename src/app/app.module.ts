@@ -8,10 +8,18 @@ import {
   ScreenTrackingService,
   UserTrackingService
 } from '@angular/fire/analytics';
-import { provideAuth, getAuth } from '@angular/fire/auth';
-import { provideFunctions, getFunctions } from '@angular/fire/functions';
+import { provideAuth, getAuth, connectAuthEmulator } from '@angular/fire/auth';
+import {
+  provideFunctions,
+  getFunctions,
+  connectFunctionsEmulator
+} from '@angular/fire/functions';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import {
+  MatSnackBarModule,
+  MAT_SNACK_BAR_DEFAULT_OPTIONS
+} from '@angular/material/snack-bar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -34,6 +42,7 @@ const routes: Route[] = [
     BrowserAnimationsModule,
     MatButtonModule,
     MatIconModule,
+    MatSnackBarModule,
     MatSidenavModule,
     MatToolbarModule,
     MatTooltipModule,
@@ -41,11 +50,30 @@ const routes: Route[] = [
     NgxUiLoaderRouterModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     ...(environment.production ? [provideAnalytics(() => getAnalytics())] : []),
-    provideAuth(() => getAuth()),
-    provideFunctions(() => getFunctions()),
+    provideAuth(() => {
+      const auth = getAuth();
+      if (!environment.production) {
+        connectAuthEmulator(auth, 'http://localhost:9099');
+      }
+      return auth;
+    }),
+    provideFunctions(() => {
+      const functions = getFunctions();
+      if (!environment.production) {
+        connectFunctionsEmulator(functions, 'localhost', 5001);
+      }
+      return functions;
+    }),
     RouterModule.forRoot(routes)
   ],
-  providers: [ScreenTrackingService, UserTrackingService],
+  providers: [
+    ScreenTrackingService,
+    UserTrackingService,
+    {
+      provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
+      useValue: { duration: '5000', verticalPosition: 'top' }
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
