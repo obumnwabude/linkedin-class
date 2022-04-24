@@ -128,6 +128,7 @@ export const callback = functions.https.onRequest(async (req, res) => {
       .doc(`/users/${state}/auth/linkedin`)
       .set(linkedin, { merge: true });
   } catch (error) {
+    if (error.code !== 'cancelled') console.error(error);
     await db
       .doc(`/users/${req.query.state}`)
       .set({ error: error.message }, { merge: true });
