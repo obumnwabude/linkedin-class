@@ -120,7 +120,10 @@ export const callback = functions.https.onRequest(async (req, res) => {
       await db.doc(`/users/${state}`).set({ profile, sharing });
       await db
         .doc('/counters/users')
-        .set({ count: admin.firestore.FieldValue.increment(1) });
+        .set(
+          { count: admin.firestore.FieldValue.increment(1) },
+          { merge: true }
+        );
       await admin.auth().createUser({ uid: state, ...profile });
     }
 
