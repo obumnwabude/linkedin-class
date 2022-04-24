@@ -1,9 +1,18 @@
 [loader] {
   max-width: 512px;
-  margin: 64px auto;
+  margin: 0 auto;
+  padding: 160px 0 64px 0;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+[card-container] {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 96px 32px 64px 32px;
+  min-height: calc(100vh - 64px);
 }
 
 [card] {

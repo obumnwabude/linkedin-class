@@ -9,11 +9,13 @@
     share it on LinkedIn and on at least two any other platforms.
   </p>
 
-  <mat-tab-group>
+  <mat-tab-group mat-stretch-tabs>
     <mat-tab *ngFor="let platform of platforms">
       <ng-template mat-tab-label>
         <mat-checkbox [disabled]="true" [checked]="sharing[platform]">
-          <span capitalize>{{ platform }}</span>
+          <span capitalize>{{
+            platform === 'copy' ? 'Copy Link' : platform
+          }}</span>
         </mat-checkbox>
       </ng-template>
 
@@ -54,10 +56,10 @@
     </mat-tab>
   </mat-tab-group>
 
-  <mat-divider></mat-divider>
+  <mat-divider before-button></mat-divider>
 
   <p text-center>
-    <button mat-raised-button color="primary" (click)="joinClass()" join>
+    <button mat-raised-button color="accent" (click)="joinClass()" join>
       Join the Class
     </button>
   </p>

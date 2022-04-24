@@ -2,99 +2,102 @@
   <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
 </div>
 
-<div *ngIf="!isLoadingPage">
+<ng-container *ngIf="!isLoadingPage">
   <div *ngIf="auth.currentUser && hasSetLink"><app-waiter></app-waiter></div>
 
-  <div card *ngIf="!auth.currentUser || !hasSetLink">
-    <div img-container>
-      <div img>
-        <img src="assets/images/obum.png" matTooltip="Obum" alt="" />
+  <div card-container *ngIf="!auth.currentUser || !hasSetLink">
+    <div card>
+      <div img-container>
+        <div img>
+          <img src="assets/images/obum.png" matTooltip="Obum" alt="" />
+        </div>
       </div>
-    </div>
-    <div text>
-      <h2>Welcome</h2>
+      <div text>
+        <h2>Welcome</h2>
 
-      <ng-container *ngIf="!auth.currentUser">
-        <p message big-read>
-          You will get enormous value from this <span bold>FREE&nbsp;</span>
-          <span italic>"Grow your LinkedIn"&nbsp;</span> Whatsapp class. Sign in
-          to access the class. Also, as you sign in, you record your LinkedIn
-          Account for us to grow your followers.
-        </p>
-
-        <p>
-          <button
-            mat-raised-button
-            sign-in
-            (click)="signIn()"
-            color="primary"
-            matTooltip="Sign In With LinkedIn"
-          >
-            <img
-              src="assets/images/sign-in-with-linkedin.png"
-              alt="Sign In With LinkedIn"
-            />
-          </button>
-        </p>
-
-        <p terms>
-          <small>
-            *By signing in you agree to that your information can be recorded
-            for the class, for marketing purposes, and that other class members
-            can view your name and picture and connect with you on LinkedIn.
-          </small>
-        </p>
-      </ng-container>
-
-      <ng-container *ngIf="auth.currentUser && !hasSetLink">
-        <p message big-read>
-          Hi
-          <span bold>{{ auth.currentUser.displayName?.split(' ')?.[0] }}</span
-          >, You are currently signed in with
-          <span italic bold>{{ auth.currentUser.email }}</span
-          >. To complete your sign in, please provide your LinkedIn profile
-          link.
-        </p>
-
-        <form (ngSubmit)="submitLink(link)" #ngForm>
-          <p link-form-container>
-            <mat-form-field>
-              <mat-label>LinkedIn Profile Link</mat-label>
-              <input
-                type="text"
-                matInput
-                autofocus
-                required
-                ngModel
-                pattern="^https:\/\/linkedin.com\/in\/(\w|-)+"
-                #link="ngModel"
-                name="link"
-              />
-              <mat-error *ngIf="link.invalid">{{
-                link.hasError('required')
-                  ? 'Please provide your LinkedIn link'
-                  : 'Valid link starts with https://linkedin.com/in/'
-              }}</mat-error>
-              <mat-icon
-                matSuffix
-                matTooltip="Your link is in your public profile settings. Edit your custom URL as you want, then copy the full link, and come and paste it here."
-                >help</mat-icon
-              >
-            </mat-form-field>
-          </p>
-
-          <p terms form-hint text-left>
-            <small
-              >*Ensure your URL is correct, else it won't be listed with those
-              of other class members.</small
-            >
+        <ng-container *ngIf="!auth.currentUser">
+          <p message big-read>
+            You will get enormous value from this <span bold>FREE&nbsp;</span>
+            <span italic>"Grow your LinkedIn"&nbsp;</span> Whatsapp class. Sign
+            in to access the class. Also, as you sign in, you record your
+            LinkedIn Account for us to grow your followers.
           </p>
 
           <p>
-            <button mat-raised-button color="primary">Submit Link</button>
+            <button
+              mat-raised-button
+              sign-in
+              (click)="signIn()"
+              color="primary"
+              matTooltip="Sign In With LinkedIn"
+            >
+              <img
+                src="assets/images/sign-in-with-linkedin.png"
+                alt="Sign In With LinkedIn"
+              />
+            </button>
           </p>
-        </form>
-      </ng-container>
+
+          <p terms>
+            <small>
+              *By signing in you agree to that your information can be recorded
+              for the class, for marketing purposes, and that other class
+              members can view your name and picture and connect with you on
+              LinkedIn.
+            </small>
+          </p>
+        </ng-container>
+
+        <ng-container *ngIf="auth.currentUser && !hasSetLink">
+          <p message big-read>
+            Hi
+            <span bold>{{ auth.currentUser.displayName?.split(' ')?.[0] }}</span
+            >, You are currently signed in with
+            <span italic bold>{{ auth.currentUser.email }}</span
+            >. To complete your sign in, please provide your LinkedIn profile
+            link.
+          </p>
+
+          <form (ngSubmit)="submitLink(link)" #ngForm>
+            <p link-form-container>
+              <mat-form-field>
+                <mat-label>LinkedIn Profile Link</mat-label>
+                <input
+                  type="text"
+                  matInput
+                  autofocus
+                  required
+                  ngModel
+                  pattern="^https:\/\/linkedin.com\/in\/(\w|-)+"
+                  #link="ngModel"
+                  name="link"
+                />
+                <mat-error *ngIf="link.invalid">{{
+                  link.hasError('required')
+                    ? 'Please provide your LinkedIn link'
+                    : 'Valid link starts with https://linkedin.com/in/'
+                }}</mat-error>
+                <mat-icon
+                  matSuffix
+                  matTooltip="Your link is in your public profile settings. Edit your custom URL as you want, then copy the full link, and come and paste it here."
+                  >help</mat-icon
+                >
+              </mat-form-field>
+            </p>
+
+            <p terms form-hint text-left>
+              <small
+                >*Ensure your URL is correct, else it won't be listed with those
+                of other class members.</small
+              >
+            </p>
+
+            <p>
+              <button mat-raised-button color="primary">Submit Link</button>
+            </p>
+          </form>
+        </ng-container>
+      </div>
     </div>
   </div>
-</div>
+</ng-container>

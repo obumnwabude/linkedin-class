@@ -1,11 +1,11 @@
 app-countdown {
-  margin: 16px 0 32px;
+  margin: 112px 0 32px;
   display: block;
 }
 
 [share-container] {
   max-width: 992px;
-  margin: 0 auto;
+  margin: 0 auto 64px auto;
 }
 
 h2[heading] {
@@ -51,12 +51,16 @@ h2[heading] {
 }
 
 mat-divider {
-  max-width: 288px;
+  max-width: 256px;
   border-top-width: 2px;
   margin: 16px auto 48px auto !important;
 }
 
+mat-divider[before-button] {
+  margin-bottom: 64px !important;
+}
+
 button[join] {
   font-size: 18px;
-  padding: 4px 8px;
+  padding: 4px 12px;
 }
