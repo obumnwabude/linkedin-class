@@ -16,7 +16,7 @@ export class WaiterComponent implements OnInit {
     twitter: false,
     whatsapp: false
   };
-  platforms = ['linkedin', 'whatsapp', 'twitter', 'facebook', 'copy'];
+  platforms = ['whatsapp', 'twitter', 'linkedin', 'facebook', 'copy'];
   headings: any = {
     linkedin: 'Post on LinkedIn',
     whatsapp: 'Share to your Whatsapp status and in five groups.',
@@ -65,18 +65,16 @@ export class WaiterComponent implements OnInit {
   joinClass() {
     const { facebook, copy, linkedin, twitter, whatsapp } = this.sharing;
     if (
-      linkedin &&
-      (facebook ? 1 : 0) +
       (copy ? 1 : 0) +
-      (twitter ? 1 : 0) +
-      (whatsapp ? 1 : 0) >
+        (facebook ? 1 : 0) +
+        (linkedin ? 1 : 0) +
+        (twitter ? 1 : 0) +
+        (whatsapp ? 1 : 0) >
       1
     ) {
       window.open('https://wa.me/message/FBCQ6AEPFNACJ1', '_blank');
     } else {
-      this.snackBar.open(
-        'Please first post to LinkedIn and to at least two social platforms'
-      );
+      this.snackBar.open('Please first share to at least two social platforms');
     }
   }
 
