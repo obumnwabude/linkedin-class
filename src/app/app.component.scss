@@ -11,7 +11,7 @@ mat-toolbar[navbar] {
     max-width: 992px;
     margin-left: auto;
     margin-right: auto;
-    padding: 0 32px;
+    padding: 0 24px;
 
     h1 {
       font-size: 24px;
@@ -20,6 +20,10 @@ mat-toolbar[navbar] {
         width: 32px;
         margin-bottom: -6px;
       }
+    }
+
+    [sign-out] {
+      margin-right: 8px;
     }
   }
 }
@@ -53,7 +57,7 @@ footer {
     align-items: center;
     margin-left: auto;
     margin-right: auto;
-    padding: 0 32px;
+    padding: 0 24px;
 
     [globe-icon] {
       width: 36px;

@@ -11,6 +11,14 @@
       <img blue-o src="assets/images/blue-o.png" alt="O" /><span>bum</span>
     </h1>
     <span spacer></span>
+    <button
+      mat-stroked-button
+      sign-out
+      (click)="auth.signOut()"
+      *ngIf="auth.currentUser"
+    >
+      Sign Out
+    </button>
     <button mat-icon-button (click)="changeTheme()" title="Switch Theme">
       <img
         [src]="

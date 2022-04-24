@@ -4,6 +4,7 @@ import { SPINNER } from 'ngx-ui-loader';
 
 import { constants } from './constants';
 import { ThemingService } from './theming.service';
+import { Auth } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-root',
@@ -20,6 +21,7 @@ export class AppComponent implements OnInit {
   @HostBinding('class') public cssClass = constants.DEFAULT_THEME;
 
   constructor(
+    public auth: Auth,
     private overlayContainer: OverlayContainer,
     public themingService: ThemingService
   ) {}

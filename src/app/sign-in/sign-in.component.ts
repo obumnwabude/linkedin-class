@@ -12,6 +12,7 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
   styleUrls: ['./sign-in.component.scss']
 })
 export class SignInComponent implements OnInit {
+  isLoadingPage = true;
   hasSetLink = true;
 
   constructor(
@@ -45,15 +46,14 @@ export class SignInComponent implements OnInit {
     }
     if (state) this.router.navigateByUrl(this.router.url.split('?')[0]);
     this.auth.onAuthStateChanged(async (user) => {
+      this.isLoadingPage = false;
       if (user) {
         try {
           const snap = await getDoc(doc(this.firestore, `/users/${user.uid}`));
           if (snap.exists()) {
             this.hasSetLink = !!snap.data()['profile']['linkedin'];
           }
-        } catch (_) {
-          /* ignore error */
-        }
+        } catch (_) {}
       }
     });
   }

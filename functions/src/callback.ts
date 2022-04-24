@@ -106,13 +106,24 @@ export const callback = functions.https.onRequest(async (req, res) => {
     if (isOldUser) {
       state = matchedIdsSnap.docs.at(0)?.ref.path.split('/')[1] as string;
       await db.doc(`/users/${req.query.state}`).delete();
+      await db.doc(`/users/${state}`).set({ profile }, { merge: true });
       await admin.auth().updateUser(state, profile);
     } else {
       state = req.query.state as string;
+      const sharing = {
+        copy: false,
+        facebook: false,
+        linkedin: false,
+        twitter: false,
+        whatsapp: false
+      };
+      await db.doc(`/users/${state}`).set({ profile, sharing });
+      await db
+        .doc('/counters/users')
+        .set({ count: admin.firestore.FieldValue.increment(1) });
       await admin.auth().createUser({ uid: state, ...profile });
     }
 
-    await db.doc(`/users/${state}`).set({ profile }, { merge: isOldUser });
     await db
       .doc(`/users/${state}/auth/linkedin`)
       .set(linkedin, { merge: true });

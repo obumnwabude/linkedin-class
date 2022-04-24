@@ -1,6 +1,8 @@
 @use '@angular/material' as mat;
 @include mat.core();
 
+@import '../node_modules/ngx-sharebuttons/themes/modern';
+
 $primary: mat.define-palette(mat.$light-blue-palette);
 $accent: mat.define-palette(mat.$light-blue-palette, A200, A100, A400);
 
@@ -82,6 +84,12 @@ body {
   flex: 1 1 auto;
 }
 
+[big-read] {
+  line-height: 1.4;
+  word-spacing: 1.8px;
+  letter-spacing: 0.4px;
+}
+
 [bold] {
   font-weight: bold;
 }
@@ -90,6 +98,60 @@ body {
   font-style: italic;
 }
 
+[text-center] {
+  text-align: center;
+}
+
 [text-left] {
   text-align: left;
+}
+
+[mx-auto] {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+[underline] {
+  text-decoration: underline;
+}
+
+[share-container] {
+  .mat-tab-label-active {
+    opacity: 1;
+  }
+
+  .mat-checkbox-ripple .mat-ripple-element,
+  .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+    background-color: #03a9f4;
+  }
+
+  @keyframes tab-header-arrow-left {
+    0% {
+      transform: translateX(-4px) rotate(-135deg);
+    }
+
+    100% {
+      transform: translateX(4px) rotate(-135deg);
+    }
+  }
+
+  .mat-tab-header-pagination-before:not(.mat-tab-header-pagination-disabled)
+    .mat-tab-header-pagination-chevron {
+    animation: tab-header-arrow-left 1s infinite alternate;
+  }
+
+  @keyframes tab-header-arrow-right {
+    0% {
+      transform: translateX(4px) rotate(45deg);
+    }
+
+    100% {
+      transform: translateX(-4px) rotate(45deg);
+    }
+  }
+
+  .mat-tab-header-pagination-after:not(.mat-tab-header-pagination-disabled)
+    .mat-tab-header-pagination-chevron {
+    animation: tab-header-arrow-right 1s infinite alternate;
+  }
 }

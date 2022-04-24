@@ -21,22 +21,39 @@ import {
 } from '@angular/fire/functions';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import {
   MatSnackBarModule,
   MAT_SNACK_BAR_DEFAULT_OPTIONS
 } from '@angular/material/snack-bar';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Route, RouterModule } from '@angular/router';
+import {
+  FontAwesomeModule,
+  FaIconLibrary
+} from '@fortawesome/angular-fontawesome';
+import { faCheck } from '@fortawesome/free-solid-svg-icons/faCheck';
+import { faFacebookF } from '@fortawesome/free-brands-svg-icons/faFacebookF';
+import { faLink } from '@fortawesome/free-solid-svg-icons/faLink';
+import { faLinkedinIn } from '@fortawesome/free-brands-svg-icons/faLinkedinIn';
+import { faTwitter } from '@fortawesome/free-brands-svg-icons/faTwitter';
+import { faWhatsapp } from '@fortawesome/free-brands-svg-icons/faWhatsapp';
 import { NgxUiLoaderModule, NgxUiLoaderRouterModule } from 'ngx-ui-loader';
+import { ShareButtonModule } from 'ngx-sharebuttons/button';
 
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { SignInComponent } from './sign-in/sign-in.component';
+import { CountdownComponent } from './countdown.component';
+import { WaiterComponent } from './waiter/waiter.component';
 
 const routes: Route[] = [
   { path: '', component: SignInComponent },
@@ -44,17 +61,27 @@ const routes: Route[] = [
 ];
 
 @NgModule({
-  declarations: [AppComponent, SignInComponent],
+  declarations: [
+    AppComponent,
+    SignInComponent,
+    CountdownComponent,
+    WaiterComponent
+  ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    FontAwesomeModule,
     FormsModule,
     MatButtonModule,
+    MatCheckboxModule,
+    MatDividerModule,
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
+    MatProgressSpinnerModule,
     MatSnackBarModule,
     MatSidenavModule,
+    MatTabsModule,
     MatToolbarModule,
     MatTooltipModule,
     NgxUiLoaderModule,
@@ -82,7 +109,8 @@ const routes: Route[] = [
       }
       return functions;
     }),
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes),
+    ShareButtonModule
   ],
   providers: [
     ScreenTrackingService,
@@ -94,4 +122,15 @@ const routes: Route[] = [
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule {
+  constructor(library: FaIconLibrary) {
+    library.addIcons(
+      faCheck,
+      faFacebookF,
+      faLink,
+      faLinkedinIn,
+      faTwitter,
+      faWhatsapp
+    );
+  }
+}
