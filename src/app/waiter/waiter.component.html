@@ -12,7 +12,13 @@
   <mat-tab-group mat-stretch-tabs>
     <mat-tab *ngFor="let platform of platforms">
       <ng-template mat-tab-label>
-        <mat-checkbox [disabled]="true" [checked]="sharing[platform]">
+        <mat-checkbox
+          [disabled]="true"
+          [checked]="sharing[platform]"
+          [matTooltip]="
+            capitalize(platform === 'copy' ? 'Copy Link' : platform)
+          "
+        >
           <span capitalize>{{
             platform === 'copy' ? 'Copy Link' : platform
           }}</span>
@@ -50,6 +56,9 @@
             [showText]="true"
             [url]="urls[platform]"
             (opened)="saveSharing(platform)"
+            [matTooltip]="
+              platform === 'whatsapp' ? 'Share to Whatsapp' : headings[platform]
+            "
           ></share-button>
         </p>
       </div>
@@ -59,7 +68,13 @@
   <mat-divider before-button></mat-divider>
 
   <p text-center>
-    <button mat-raised-button color="accent" (click)="joinClass()" join>
+    <button
+      mat-raised-button
+      color="accent"
+      (click)="joinClass()"
+      join
+      matTooltip="Join the FREE class Now!"
+    >
       Join the Class
     </button>
   </p>

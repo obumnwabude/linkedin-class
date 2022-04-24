@@ -16,10 +16,11 @@
       sign-out
       (click)="auth.signOut()"
       *ngIf="auth.currentUser"
+      matTooltip="Sign Out"
     >
       Sign Out
     </button>
-    <button mat-icon-button (click)="changeTheme()" title="Switch Theme">
+    <button mat-icon-button (click)="changeTheme()" matTooltip="Switch Theme">
       <img
         [src]="
           'assets/svgs/' +
