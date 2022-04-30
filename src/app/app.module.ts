@@ -26,6 +26,10 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import {
+  MatPaginatorIntl,
+  MatPaginatorModule
+} from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import {
   MatSnackBarModule,
@@ -54,9 +58,11 @@ import { AppComponent } from './app.component';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { CountdownComponent } from './countdown.component';
 import { WaiterComponent } from './waiter/waiter.component';
+import { MembersComponent } from './members/members.component';
 
 const routes: Route[] = [
-  { path: '', component: SignInComponent },
+  { path: '', component: MembersComponent },
+  { path: 'sign-in', component: SignInComponent },
   { path: '**', redirectTo: '/', pathMatch: 'full' }
 ];
 
@@ -65,7 +71,8 @@ const routes: Route[] = [
     AppComponent,
     SignInComponent,
     CountdownComponent,
-    WaiterComponent
+    WaiterComponent,
+    MembersComponent
   ],
   imports: [
     BrowserModule,
@@ -78,6 +85,7 @@ const routes: Route[] = [
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
+    MatPaginatorModule,
     MatProgressSpinnerModule,
     MatSnackBarModule,
     MatSidenavModule,
@@ -118,6 +126,14 @@ const routes: Route[] = [
     {
       provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
       useValue: { duration: '5000', verticalPosition: 'top' }
+    },
+    {
+      provide: MatPaginatorIntl,
+      useFactory: () => {
+        const mpi = new MatPaginatorIntl();
+        mpi.itemsPerPageLabel = 'Members Per Page';
+        return mpi;
+      }
     }
   ],
   bootstrap: [AppComponent]
