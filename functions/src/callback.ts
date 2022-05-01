@@ -136,6 +136,6 @@ export const callback = functions.https.onRequest(async (req, res) => {
       .doc(`/users/${req.query.state}`)
       .set({ error: error.message }, { merge: true });
   } finally {
-    res.redirect(`${origin}/?state=${state}`);
+    res.redirect(`${origin}/sign-in?state=${state}`);
   }
 });

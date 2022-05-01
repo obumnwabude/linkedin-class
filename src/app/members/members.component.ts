@@ -3,6 +3,7 @@ import { Auth } from '@angular/fire/auth';
 import { Functions, httpsCallable } from '@angular/fire/functions';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { constants } from '../constants';
 
@@ -29,11 +30,12 @@ export class MembersComponent implements OnInit {
   constructor(
     private auth: Auth,
     private fns: Functions,
+    private router: Router,
     private snackBar: MatSnackBar
   ) {}
 
   async ngOnInit() {
-    if (this.auth.currentUser == null) {
+    if (this.auth.currentUser != null) {
       try {
         this.allMembers = (await httpsCallable(this.fns, 'members')({}))
           .data as Member[];
@@ -45,6 +47,8 @@ export class MembersComponent implements OnInit {
       } finally {
         this.isLoadingPage = false;
       }
+    } else {
+      this.router.navigateByUrl('/sign-in');
     }
   }
 

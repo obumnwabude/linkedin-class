@@ -6,6 +6,7 @@ import { NgModel } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   templateUrl: './sign-in.component.html',
@@ -44,16 +45,29 @@ export class SignInComponent implements OnInit {
         this.ngxLoader.stop();
       }
     }
-    if (state) this.router.navigateByUrl(this.router.url.split('?')[0]);
     this.auth.onAuthStateChanged(async (user) => {
-      this.isLoadingPage = false;
       if (user) {
         try {
           const snap = await getDoc(doc(this.firestore, `/users/${user.uid}`));
           if (snap.exists()) {
             this.hasSetLink = !!snap.data()['profile']['linkedin'];
+            if (this.hasSetLink) this.router.navigateByUrl('/');
+            else this.isLoadingPage = false;
+          } else {
+            firstValueFrom(
+              this.snackBar
+                .open('Critical Error Happened', 'CONTACT DEVELOPERS')
+                .onAction()
+            ).then(() =>
+              window.open(
+                'https://api.whatsapp.com/send?phone=2347033777385&text=Hi%20Obum,%20I%27m%20having%20issues%20with%20the%20%22Grow%20your%20LinkedIn%22%20website%0D%0A%0D%0AMy%20name%20is%20',
+                '_blank'
+              )
+            );
           }
         } catch (_) {}
+      } else {
+        this.isLoadingPage = false;
       }
     });
   }
@@ -87,6 +101,7 @@ export class SignInComponent implements OnInit {
         );
         this.hasSetLink = true;
         this.snackBar.open('Your Link has been recorded');
+        this.router.navigateByUrl('/');
       } catch (error) {
         this.snackBar.open(error.message);
       } finally {
