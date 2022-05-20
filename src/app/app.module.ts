@@ -10,6 +10,11 @@ import {
 } from '@angular/fire/analytics';
 import { provideAuth, getAuth, connectAuthEmulator } from '@angular/fire/auth';
 import {
+  AuthGuard,
+  redirectLoggedInTo,
+  redirectUnauthorizedTo
+} from '@angular/fire/auth-guard';
+import {
   connectFirestoreEmulator,
   provideFirestore,
   getFirestore
@@ -26,6 +31,10 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import {
+  MatPaginatorIntl,
+  MatPaginatorModule
+} from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import {
   MatSnackBarModule,
@@ -36,27 +45,27 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Route, RouterModule } from '@angular/router';
-import {
-  FontAwesomeModule,
-  FaIconLibrary
-} from '@fortawesome/angular-fontawesome';
-import { faCheck } from '@fortawesome/free-solid-svg-icons/faCheck';
-import { faFacebookF } from '@fortawesome/free-brands-svg-icons/faFacebookF';
-import { faLink } from '@fortawesome/free-solid-svg-icons/faLink';
-import { faLinkedinIn } from '@fortawesome/free-brands-svg-icons/faLinkedinIn';
-import { faTwitter } from '@fortawesome/free-brands-svg-icons/faTwitter';
-import { faWhatsapp } from '@fortawesome/free-brands-svg-icons/faWhatsapp';
 import { NgxUiLoaderModule, NgxUiLoaderRouterModule } from 'ngx-ui-loader';
-import { ShareButtonModule } from 'ngx-sharebuttons/button';
 
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { CountdownComponent } from './countdown.component';
-import { WaiterComponent } from './waiter/waiter.component';
+import { MembersComponent } from './members/members.component';
 
 const routes: Route[] = [
-  { path: '', component: SignInComponent },
+  {
+    path: '',
+    component: MembersComponent,
+    canActivate: [AuthGuard],
+    data: { authGuardPipe: () => redirectUnauthorizedTo('/sign-in') }
+  },
+  {
+    path: 'sign-in',
+    component: SignInComponent,
+    canActivate: [AuthGuard],
+    data: { authGuardPipe: () => redirectLoggedInTo('/') }
+  },
   { path: '**', redirectTo: '/', pathMatch: 'full' }
 ];
 
@@ -65,12 +74,11 @@ const routes: Route[] = [
     AppComponent,
     SignInComponent,
     CountdownComponent,
-    WaiterComponent
+    MembersComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    FontAwesomeModule,
     FormsModule,
     MatButtonModule,
     MatCheckboxModule,
@@ -78,6 +86,7 @@ const routes: Route[] = [
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
+    MatPaginatorModule,
     MatProgressSpinnerModule,
     MatSnackBarModule,
     MatSidenavModule,
@@ -109,8 +118,7 @@ const routes: Route[] = [
       }
       return functions;
     }),
-    RouterModule.forRoot(routes),
-    ShareButtonModule
+    RouterModule.forRoot(routes)
   ],
   providers: [
     ScreenTrackingService,
@@ -118,19 +126,16 @@ const routes: Route[] = [
     {
       provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
       useValue: { duration: '5000', verticalPosition: 'top' }
+    },
+    {
+      provide: MatPaginatorIntl,
+      useFactory: () => {
+        const mpi = new MatPaginatorIntl();
+        mpi.itemsPerPageLabel = 'Members Per Page';
+        return mpi;
+      }
     }
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-  constructor(library: FaIconLibrary) {
-    library.addIcons(
-      faCheck,
-      faFacebookF,
-      faLink,
-      faLinkedinIn,
-      faTwitter,
-      faWhatsapp
-    );
-  }
-}
+export class AppModule {}

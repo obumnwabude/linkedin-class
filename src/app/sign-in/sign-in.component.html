@@ -3,8 +3,6 @@
 </div>
 
 <ng-container *ngIf="!isLoadingPage">
-  <div *ngIf="auth.currentUser && hasSetLink"><app-waiter></app-waiter></div>
-
   <div card-container *ngIf="!auth.currentUser || !hasSetLink">
     <div card>
       <div img-container>
@@ -68,7 +66,7 @@
                   autofocus
                   required
                   ngModel
-                  pattern="^https:\/\/(www\.)?linkedin.com\/in\/(\w|-)+"
+                  pattern="^https:\/\/(www\.)?linkedin.com\/in\/(\w|-)+(\/)?$"
                   #link="ngModel"
                   name="link"
                 />

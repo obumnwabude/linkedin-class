@@ -1,0 +1,54 @@
+<div loader *ngIf="isLoadingPage">
+  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div>
+
+<ng-container *ngIf="!isLoadingPage">
+  <div members-heading>
+    <h2>Class Members</h2>
+    <p instruction>Please connect with everybody</p>
+    <mat-paginator
+      (page)="pageEvent($event)"
+      [length]="allMembers.length"
+      [pageSize]="membersPerPage"
+      [pageSizeOptions]="[5, 10, 20, 25, 40, 50, 75, 100]"
+      color="primary"
+      [showFirstLastButtons]="true"
+    >
+    </mat-paginator>
+  </div>
+
+  <div members>
+    <div member *ngFor="let member of members">
+      <div
+        photo-container
+        class="mat-elevation-z2"
+        [matTooltip]="member.displayName"
+      >
+        <mat-icon person>person</mat-icon>
+        <div
+          photo
+          *ngIf="member.photoURL"
+          [ngStyle]="{
+            'background-image': 'url(' + member.photoURL + ')'
+          }"
+        ></div>
+        <!-- <img
+        *ngIf="member.photoURL"
+        [src]="member.photoURL"
+        alt=""
+      /> -->
+      </div>
+      <p name>{{ member.displayName }}</p>
+      <a
+        [href]="member.linkedin"
+        mat-stroked-button
+        target="_blank"
+        rel="noopener noreferer"
+        connect
+        color="primary"
+        ><span>Connect</span
+        ><img src="assets/svgs/linkedin.svg" alt="" linkedin
+      /></a>
+    </div>
+  </div>
+</ng-container>

@@ -1,8 +1,6 @@
 @use '@angular/material' as mat;
 @include mat.core();
 
-@import '../node_modules/ngx-sharebuttons/themes/modern';
-
 $primary: mat.define-palette(mat.$light-blue-palette);
 $accent: mat.define-palette(mat.$light-blue-palette, A200, A100, A400);
 
@@ -39,6 +37,18 @@ img[src$='.svg'] {
   }
 }
 
+[members-heading] {
+  background-color: #424242;
+}
+
+[member] {
+  background-color: rgba($color: #000000, $alpha: 0.2);
+
+  [photo-container] mat-icon[person] {
+    color: rgba(0, 0, 0, 0.87);
+  }
+}
+
 @include mat.all-component-themes($dark-theme);
 
 .light-mode {
@@ -58,6 +68,11 @@ img[src$='.svg'] {
     [text] {
       border: 8px double rgba(0, 0, 0, 0.12);
     }
+  }
+
+  [members-heading],
+  [member] {
+    background-color: white;
   }
 }
 
@@ -113,6 +128,22 @@ body {
 
 [underline] {
   text-decoration: underline;
+}
+
+[loader] {
+  max-width: 512px;
+  margin: 0 auto;
+  padding: 160px 0 64px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+[members-heading] {
+  .mat-paginator-container {
+    justify-content: center;
+    padding: 0;
+  }
 }
 
 [share-container] {
